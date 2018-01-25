@@ -32,7 +32,11 @@ describe GildedRose do
       expect(item.quality).to be >= 0
     end
 
-    it "The quality of an item is never more than 50"
+    it "The quality of an item is never more than 50" do
+      item = Item.new("foo", 10, 60)
+      update_quality item
+      expect(item.quality).to be <= 50
+    end
   end
 
   describe "Corner cases:" do
