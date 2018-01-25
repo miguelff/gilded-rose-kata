@@ -23,7 +23,7 @@ class ItemUpdater
     strategies = { SpecialItems::AGED_BRIE        => AgedBrieUpdater,
                    SpecialItems::SULFURAS         => SulfurasUpdater,
                    SpecialItems::BACKSTAGE_PASSES => BackstagePassesUpdater,
-                   SpecialItems::CONJURED         => ConjuredUpdater}
+                   SpecialItems::CONJURED         => ConjuredUpdater}.freeze
 
     (strategies[item.name] || self).new(item)
   end
@@ -40,6 +40,8 @@ class ItemUpdater
     @item.sell_in = new_sell_in
     @item.quality = new_quality
   end
+
+  protected
 
   def update_sell_in(item)
     [item.sell_in - sell_in_decrease, 0].max
@@ -61,7 +63,7 @@ end
 
 class AgedBrieUpdater < ItemUpdater
   def update_quality(item)
-    [item.quality + 1, 50].min
+    [item.quality + 1, Item::MAX_QUALITY].min
   end
 end
 
@@ -80,7 +82,7 @@ class BackstagePassesUpdater < ItemUpdater
                     quality + 1
                   end
 
-    [new_quality, 50].min
+    [new_quality, Item::MAX_QUALITY].min
   end
 end
 
@@ -96,6 +98,8 @@ class SulfurasUpdater < ItemUpdater
 end
 
 class Item
+  MAX_QUALITY = 50
+
   attr_accessor :name, :sell_in, :quality
 
   def initialize(name, sell_in, quality)
