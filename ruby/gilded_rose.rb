@@ -53,6 +53,10 @@ class GildedRose
   end
 end
 
+module SpecialItems
+   AGED_BRIE = "Aged Brie".freeze
+end
+
 class Item
   attr_accessor :name, :sell_in, :quality
 

@@ -40,7 +40,12 @@ describe GildedRose do
   end
 
   describe "Corner cases:" do
-    it "'Aged Brie' actually increases in quality the older it gets"
+    it "'Aged Brie' actually increases in quality the older it gets" do
+      aged_brie = Item.new(SpecialItems::AGED_BRIE, 5, 10)
+      update_quality aged_brie
+      expect(aged_brie.quality).to eq(11)
+    end
+
     it "'Sulfuras' never has to be sold or decreases in quality"
     describe "'Backstage passes'" do
       it "increases quality by 2 when there are 10 days or less of sell-in value"
