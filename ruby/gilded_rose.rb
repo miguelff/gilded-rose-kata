@@ -75,22 +75,26 @@ class ItemUpdater
   end
 
   def update
-    update_sell_in_value(@item)
-    update_quality(@item)
+    duplicate = @item.dup
+    new_sell_in = update_sell_in(duplicate)
+    new_quality = update_quality(duplicate)
+
+    @item.sell_in = new_sell_in
+    @item.quality = new_quality
   end
 
-  def update_sell_in_value(item)
-    item.sell_in = [item.sell_in - 1, 0].max
+  def update_sell_in(item)
+    [item.sell_in - 1, 0].max
   end
 
   def update_quality(item)
-    item.quality = [item.quality - 1, 0].max
+    [item.quality - 1, 0].max
   end
 end
 
 class AgedBrieUpdater < ItemUpdater
   def update_quality(item)
-    item.quality = [item.quality + 1, 50].min
+    [item.quality + 1, 50].min
   end
 end
 
