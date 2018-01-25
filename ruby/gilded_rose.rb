@@ -7,7 +7,7 @@ class GildedRose
   def update_quality()
     @items.each do |item|
       if item.name == SpecialItems::AGED_BRIE
-        legacy_update_quality item
+        AgedBrieUpdater.new(item).update
       else
         legacy_update_quality item
       end
@@ -58,6 +58,26 @@ class GildedRose
         end
       end
     end
+  end
+end
+
+class AgedBrieUpdater
+
+  def initialize(item)
+    @item = item
+  end
+
+  def update
+    update_sell_in_value(@item)
+    update_quality(@item)
+  end
+
+  def update_sell_in_value(item)
+    item.sell_in = [item.sell_in - 1, 0].max
+  end
+
+  def update_quality(item)
+    item.quality = [item.quality + 1, 50].min
   end
 end
 
