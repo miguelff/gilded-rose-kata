@@ -22,7 +22,8 @@ class ItemUpdater
   def self.for(item)
     strategies = { SpecialItems::AGED_BRIE        => AgedBrieUpdater,
                    SpecialItems::SULFURAS         => SulfurasUpdater,
-                   SpecialItems::BACKSTAGE_PASSES => BackstagePassesUpdater }
+                   SpecialItems::BACKSTAGE_PASSES => BackstagePassesUpdater,
+                   SpecialItems::CONJURED         => ConjuredUpdater}
 
     (strategies[item.name] || self).new(item)
   end
@@ -41,12 +42,20 @@ class ItemUpdater
   end
 
   def update_sell_in(item)
-    [item.sell_in - 1, 0].max
+    [item.sell_in - sell_in_decrease, 0].max
+  end
+
+  def sell_in_decrease
+    1
   end
 
   def update_quality(item)
-    quality_decrease = item.sell_in <= 0 ? 2 : 1
-    [item.quality - quality_decrease, 0].max
+    decrease = item.sell_in <= 0 ? 2 * quality_decrease : quality_decrease
+    [item.quality - decrease, 0].max
+  end
+
+  def quality_decrease
+    1
   end
 end
 
@@ -72,6 +81,12 @@ class BackstagePassesUpdater < ItemUpdater
                   end
 
     [new_quality, 50].min
+  end
+end
+
+class ConjuredUpdater < ItemUpdater
+  def quality_decrease
+    2 * super
   end
 end
 
