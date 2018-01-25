@@ -10,6 +10,8 @@ class GildedRose
         AgedBrieUpdater.new(item).update
       elsif item.name == SpecialItems::SULFURAS
         SulfurasUpdater.new(item).update
+      elsif item.name == SpecialItems::BACKSTAGE_PASSES
+        BackstagePassesUpdater.new(item).update
       else
         legacy_update_quality item
       end
@@ -95,6 +97,25 @@ end
 class AgedBrieUpdater < ItemUpdater
   def update_quality(item)
     [item.quality + 1, 50].min
+  end
+end
+
+class BackstagePassesUpdater < ItemUpdater
+  def update_quality(item)
+    sell_in     = item.sell_in
+    quality     = item.quality
+
+    new_quality = if sell_in <= 0
+                    0
+                  elsif sell_in > 0 && sell_in <= 5
+                    quality + 3
+                  elsif sell_in > 5 && sell_in <= 10
+                    quality + 2
+                  else
+                    quality + 1
+                  end
+
+    [new_quality, 50].min
   end
 end
 
