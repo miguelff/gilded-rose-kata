@@ -52,9 +52,23 @@ describe GildedRose do
     end
 
     describe "'Backstage passes'" do
-      it "increases quality by 2 when there are 10 days or less of sell-in value"
-      it "increases quality by 3 when there are 5 days or less of sell-in value"
-      it "drops to 0 after the concert"
+      it "increases quality by 2 when there are 10 days or less of sell-in value" do
+        backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 10, 5)
+        update_quality backstage_passes
+        expect(backstage_passes.quality).to eq(7)
+      end
+
+      it "increases quality by 3 when there are 5 days or less of sell-in value" do
+        backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 5, 10)
+        update_quality backstage_passes
+        expect(backstage_passes.quality).to eq(13)
+      end
+
+      it "drops to 0 after the concert" do
+        backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 0, 10)
+        update_quality backstage_passes
+        expect(backstage_passes.quality).to eq(0)
+      end
     end
   end
 end
