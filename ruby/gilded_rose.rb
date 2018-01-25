@@ -6,15 +6,7 @@ class GildedRose
 
   def update_quality()
     @items.each do |item|
-      if item.name == SpecialItems::AGED_BRIE
-        AgedBrieUpdater.new(item).update
-      elsif item.name == SpecialItems::SULFURAS
-        SulfurasUpdater.new(item).update
-      elsif item.name == SpecialItems::BACKSTAGE_PASSES
-        BackstagePassesUpdater.new(item).update
-      else
-        ItemUpdater.new(item).update
-      end
+      ItemUpdater.for(item).update
     end
   end
 end
@@ -26,6 +18,14 @@ module SpecialItems
 end
 
 class ItemUpdater
+  def self.for(item)
+    strategies = { SpecialItems::AGED_BRIE        => AgedBrieUpdater,
+                   SpecialItems::SULFURAS         => SulfurasUpdater,
+                   SpecialItems::BACKSTAGE_PASSES => BackstagePassesUpdater }
+
+    (strategies[item.name] || self).new(item)
+  end
+
   def initialize(item)
     @item = item
   end
