@@ -12,9 +12,26 @@ describe GildedRose do
       update_quality item
       expect(item.name).to eq("foo")
     end
-    it "At the end of the day, the system lowers both quality and and sell-in values"
-    it "Once the sell by date has passed, quality degrades twice as fast"
-    it "The quality of an item is never negative"
+
+    it "At the end of the day, the system lowers both quality and and sell-in values" do
+      item = Item.new("foo", 10, 20)
+      update_quality item
+      expect(item.sell_in).to eq(9)
+      expect(item.quality).to eq(19)
+    end
+
+    it "Once the sell by date has passed, quality degrades twice as fast" do
+      item = Item.new("foo", 0, 20)
+      update_quality item
+      expect(item.quality).to eq(18)
+    end
+
+    it "The quality of an item is never negative" do
+      item = Item.new("foo", 10, 0)
+      update_quality item
+      expect(item.quality).to be >= 0
+    end
+
     it "The quality of an item is never more than 50"
   end
 
