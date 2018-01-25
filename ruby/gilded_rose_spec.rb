@@ -44,11 +44,13 @@ describe GildedRose do
       aged_brie = Item.new(SpecialItems::AGED_BRIE, 5, 10)
       update_quality aged_brie
       expect(aged_brie.quality).to eq(11)
+      expect(aged_brie.sell_in).to eq(4)
     end
 
     it "'Sulfuras' never has to be sold or decreases in quality" do
       sulfuras = Item.new(SpecialItems::SULFURAS, 5, 10)
       expect { update_quality(sulfuras) }.to_not change{ sulfuras.quality }
+      expect { update_quality(sulfuras) }.to_not change{ sulfuras.sell_in }
     end
 
     describe "'Backstage passes'" do
@@ -56,26 +58,31 @@ describe GildedRose do
         backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 11, 5)
         update_quality backstage_passes
         expect(backstage_passes.quality).to eq(6)
+        expect(backstage_passes.sell_in).to eq(10)
       end
 
       it "increases quality by 2 when there are 10 days or less of sell-in value" do
         backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 10, 5)
         update_quality backstage_passes
         expect(backstage_passes.quality).to eq(7)
+        expect(backstage_passes.sell_in).to eq(9)
 
         backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 6, 5)
         update_quality backstage_passes
         expect(backstage_passes.quality).to eq(7)
+        expect(backstage_passes.sell_in).to eq(5)
       end
 
       it "increases quality by 3 when there are 5 days or less of sell-in value" do
         backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 5, 10)
         update_quality backstage_passes
         expect(backstage_passes.quality).to eq(13)
+        expect(backstage_passes.sell_in).to eq(4)
 
         backstage_passes = Item.new(SpecialItems::BACKSTAGE_PASSES, 1, 10)
         update_quality backstage_passes
         expect(backstage_passes.quality).to eq(13)
+        expect(backstage_passes.sell_in).to eq(0)
       end
 
       it "drops to 0 after the concert" do
