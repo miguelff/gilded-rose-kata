@@ -8,6 +8,8 @@ class GildedRose
     @items.each do |item|
       if item.name == SpecialItems::AGED_BRIE
         AgedBrieUpdater.new(item).update
+      elsif item.name == SpecialItems::SULFURAS
+        SulfurasUpdater.new(item).update
       else
         legacy_update_quality item
       end
@@ -61,8 +63,13 @@ class GildedRose
   end
 end
 
-class AgedBrieUpdater
+module SpecialItems
+   AGED_BRIE = "Aged Brie".freeze
+   SULFURAS = "Sulfuras, Hand of Ragnaros".freeze
+   BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert".freeze
+end
 
+class ItemUpdater
   def initialize(item)
     @item = item
   end
@@ -77,14 +84,19 @@ class AgedBrieUpdater
   end
 
   def update_quality(item)
+    item.quality = [item.quality - 1, 0].max
+  end
+end
+
+class AgedBrieUpdater < ItemUpdater
+  def update_quality(item)
     item.quality = [item.quality + 1, 50].min
   end
 end
 
-module SpecialItems
-   AGED_BRIE = "Aged Brie".freeze
-   SULFURAS = "Sulfuras, Hand of Ragnaros".freeze
-   BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert".freeze
+class SulfurasUpdater < ItemUpdater
+  def update
+  end
 end
 
 class Item
