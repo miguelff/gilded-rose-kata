@@ -46,7 +46,11 @@ describe GildedRose do
       expect(aged_brie.quality).to eq(11)
     end
 
-    it "'Sulfuras' never has to be sold or decreases in quality"
+    it "'Sulfuras' never has to be sold or decreases in quality" do
+      sulfuras = Item.new(SpecialItems::SULFURAS, 5, 10)
+      expect { update_quality(sulfuras) }.to_not change{ sulfuras.quality }
+    end
+
     describe "'Backstage passes'" do
       it "increases quality by 2 when there are 10 days or less of sell-in value"
       it "increases quality by 3 when there are 5 days or less of sell-in value"
