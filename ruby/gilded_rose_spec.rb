@@ -91,5 +91,18 @@ describe GildedRose do
         expect(backstage_passes.quality).to eq(0)
       end
     end
+
+    describe "'Conjured item'" do
+      it "degrades as twice as fast as normal items" do
+        item = Item.new(SpecialItems::CONJURED, 10, 20)
+        update_quality item
+        expect(item.sell_in).to eq(9)
+        expect(item.quality).to eq(18)
+
+        item = Item.new(SpecialItems::CONJURED, 0, 20)
+        update_quality item
+        expect(item.quality).to eq(16)
+      end
+    end
   end
 end

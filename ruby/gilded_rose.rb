@@ -15,6 +15,7 @@ module SpecialItems
    AGED_BRIE = "Aged Brie".freeze
    SULFURAS = "Sulfuras, Hand of Ragnaros".freeze
    BACKSTAGE_PASSES = "Backstage passes to a TAFKAL80ETC concert".freeze
+   CONJURED = "Conjured".freeze
 end
 
 class ItemUpdater
