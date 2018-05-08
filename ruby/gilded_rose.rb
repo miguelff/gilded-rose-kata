@@ -33,9 +33,8 @@ class ItemUpdater
   end
 
   def update
-    duplicate = @item.dup
-    new_sell_in = update_sell_in(duplicate)
-    new_quality = update_quality(duplicate)
+    new_sell_in = update_sell_in(@item)
+    new_quality = update_quality(@item)
 
     @item.sell_in = new_sell_in
     @item.quality = new_quality
