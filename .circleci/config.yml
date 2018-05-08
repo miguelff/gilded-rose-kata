@@ -16,15 +16,16 @@ jobs: # a collection of steps
       - checkout # special step to check out source code to working directory
 
       - run:
-          name: Install rspec
-          command: gem install rspec
+          name: Install rspec and the junit formatter
+          command: gem install rspec rspec_junit_formatter
 
       - run:
           name: Run rspec in parallel
           command: |
-            rspec  --out test_results/rspec.xml \
-                   --format progress \
-                   ruby/gilded_rose_spec.rb
+            rspec --format RspecJunitFormatter \
+                              --out test_results/rspec.xml \
+                              --format progress \
+                              ruby/gilded_rose_spec.rb
 
       # Save test results for timing analysis
       - store_test_results:
